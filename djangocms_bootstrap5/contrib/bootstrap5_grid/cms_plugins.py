@@ -1,5 +1,5 @@
 from django.utils.translation import gettext_lazy as _
-
+from cms.api import add_plugin
 from cms.plugin_base import CMSPluginBase
 from cms.plugin_pool import plugin_pool
 
@@ -89,15 +89,20 @@ class Bootstrap5GridRowPlugin(CMSPluginBase):
                 extra['{}_col'.format(size)] = data.get(
                     'create_{}_col'.format(size)
                 )
-            col = Bootstrap5GridColumn(
-                parent=obj,
-                placeholder=obj.placeholder,
-                language=obj.language,
-                position=obj.numchild,
-                plugin_type=Bootstrap5GridColumnPlugin.__name__,
-                **extra
-            )
-            obj.add_child(instance=col)
+            #col = Bootstrap5GridColumn(
+            #    parent=obj,
+            #    placeholder=obj.placeholder,
+            #    language=obj.language,
+            #    position='last-child',
+            #    plugin_type=Bootstrap5GridColumnPlugin.__name__,
+            #    **extra
+            #)
+            #children = obj.get_children()
+            col = add_plugin(obj.placeholder,Bootstrap5GridColumnPlugin,obj.language,
+                             position="last-child", target=obj)
+
+            col.save()
+            #obj.add_child(instance=col)
 
     def render(self, context, instance, placeholder):
         gutter = 'no-gutters' if instance.gutters else ''
