@@ -99,9 +99,11 @@ class Bootstrap5GridRowPlugin(CMSPluginBase):
             #)
             #children = obj.get_children()
             col = add_plugin(obj.placeholder,Bootstrap5GridColumnPlugin,obj.language,
-                             position="last-child", target=obj)
+                             position="last-child", target=obj, **extra)
 
             col.save()
+
+
             #obj.add_child(instance=col)
 
     def render(self, context, instance, placeholder):
